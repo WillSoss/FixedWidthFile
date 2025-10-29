@@ -1,0 +1,21 @@
+name: Publish Packages to Nuget
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Pack and Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set VERSION variable from tag
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+
+      - name: Package WillSoss.FixedWidth
+        run: dotnet pack WillSoss.FixedWidth/WillSoss.FixedWidth.csproj -c Release -o feeds/nuget /p:Version=${VERSION}
+
+      - name: Push to Nuget
+        run: find feeds/nuget -name '*.nupkg' | xargs -i dotnet nuget push {} -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}

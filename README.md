@@ -1,2 +1,2 @@
-# FixedWidthFile
-Fixed-width file reader and writer
+# Fixed-Width
+No-frills fixed-width file reader and writer.

@@ -1,0 +1,51 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+autolabeler:
+  - label: 'chore'
+    files:
+      - '*.md'
+      - '*.yml'
+    title:
+      - '/docs\/.+/'
+    body:
+      - '/docs\/.+/'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+    title:
+      - '/fix/i'
+  - label: 'feature'
+    title:
+      - '/feat\/.+/'
+    body:
+      - '/feat\/.+/'
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+      - 'feat'
+      - 'enhancement'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  - title: '🧰 Maintenance'
+    label: 'chore'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+template: |
+  ## Changes
+
+  $CHANGES
