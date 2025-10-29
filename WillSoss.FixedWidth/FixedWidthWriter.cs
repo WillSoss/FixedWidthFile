@@ -63,7 +63,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="values">The record's values for each field.</param>
     public async Task WriteAsync(params object?[] values) =>
-        await WriteAsync(values, _widths);
+        await WriteAsync(_widths, values);
 
     /// <summary>
     /// Writes a record to the file.
@@ -71,7 +71,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
     /// <param name="widths">Field widths for the record, overriding the default specified in the constructor.</param>
     /// <param name="values">The record's values for each field.</param>
     public async Task WriteAsync(int[] widths, params object?[] values) =>
-        await WriteAsync(widths, values.Select(v => v.ToString()).ToArray());
+        await WriteAsync(widths, values.Select(v => (v?.ToString() ?? string.Empty)).ToArray());
 
     /// <summary>
     /// Writes a record to the file.
@@ -111,7 +111,11 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
                 builder.Append(value);
 
                 if (_options.Alignment == ValueAlignment.Start)
-                    builder.Append(builder);
+                    builder.Append(padding);
+            }
+            else
+            {
+                builder.Append(value);
             }
         }
 
