@@ -6,13 +6,13 @@ namespace WillSoss.FixedWidthFile.Tests;
 public class WriterTests
 {
     [Fact]
-    public async Task Test1Async()
+    public async Task MultipleRecords()
     {
         var path = Path.GetTempFileName();
 
         using var writer = new FixedWidthWriter(path, [1, 2, 3], new FixedWidthWriterOptions
         {
-            Alignment = ValueAlignment.End
+            Alignment = ValueAlignment.Right
         });
 
         await writer.WriteAsync("a", "b", "c");

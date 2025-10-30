@@ -11,7 +11,6 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
     private readonly FixedWidthWriterOptions _options;
 
     private readonly StreamWriter _writer;
-    private readonly bool _leaveOpen = true;
     private bool _disposed = false;
 
     /// <summary>
@@ -29,10 +28,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
     /// <param name="widths">The field widths of each record.</param>
     /// <param name="options">Options affecting the way the file is written.</param>
     public FixedWidthWriter(string filePath, int[] widths, FixedWidthWriterOptions options)
-        : this(File.Open(filePath, FileMode.Create), widths, options) 
-    {
-        _leaveOpen = false;
-    }
+        : this(File.Open(filePath, FileMode.Create), widths, options) { }
 
     /// <summary>
     /// Creates a <see cref="FixedWidthWriter"/> that writes to the <paramref name="stream"/>.
@@ -55,7 +51,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
 
         _widths = widths;
         _options = options;
-        _writer = new StreamWriter(stream, options.Encoding);
+        _writer = new StreamWriter(stream, options.Encoding, -1, _options.LeaveStreamOpen);
     }
 
     /// <summary>
@@ -105,12 +101,12 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
             {
                 string padding = new string(_options.Padding, width - value.Length);
 
-                if (_options.Alignment == ValueAlignment.End)
+                if (_options.Alignment == ValueAlignment.Right)
                     builder.Append(padding);
 
                 builder.Append(value);
 
-                if (_options.Alignment == ValueAlignment.Start)
+                if (_options.Alignment == ValueAlignment.Left)
                     builder.Append(padding);
             }
             else
@@ -156,7 +152,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
 
             await _writer.FlushAsync();
 
-            if (!_leaveOpen)
+            if (!_options.LeaveStreamOpen)
                 await _writer.DisposeAsync();
         }
     }
@@ -169,7 +165,7 @@ public class FixedWidthWriter : IDisposable, IAsyncDisposable
 
             _writer?.Flush();
 
-            if (!_leaveOpen)
+            if (!_options.LeaveStreamOpen)
                 _writer?.Dispose();
         }
     }

@@ -1,15 +1,15 @@
 ﻿namespace WillSoss.FixedWidth;
 /// <summary>
-/// Determines the alignment of values in fixed-width columns. For left-to-right languages, 'Start' means left-aligned and 'End' means right-aligned.
+/// Determines the alignment of values in fixed-width fields.
 /// </summary>
 public enum ValueAlignment
 {
     /// <summary>
-    /// Align value to the start of the column.
+    /// Aligns value to the left with padding to the right.
     /// </summary>
-    Start,
+    Left,
     /// <summary>
-    /// Align value to the end of the column.
+    /// Aligns value to the right with padding to the left.
     /// </summary>
-    End
+    Right
 }

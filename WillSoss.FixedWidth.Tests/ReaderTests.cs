@@ -16,12 +16,12 @@ public class ReaderTests
 
         using var reader = new FixedWidthReader(stream, async r =>
         {
-            var peek = await r.Peek(new int[] { 1 });
+            var peek = await r.Peek([1]);
 
             return peek?[0] switch
             {
-                "A" => new int[] { 1, 6, 10 },
-                "B" => new int[] { 1, 1, 1, 1 },
+                "A" => [1, 6, 10],
+                "B" => [1, 1, 1, 1],
                 _ => null
             };
         });
@@ -58,8 +58,8 @@ public class ReaderTests
 
             return peek?[0] switch
             {
-                "A" => new int[] { 1, 6, 10 },
-                "B" => new int[] { 1, 1, 1, 1 },
+                "A" => [1, 6, 10],
+                "B" => [1, 1, 1, 1],
                 _ => null
             };
         }, new FixedWidthReaderOptions
@@ -93,7 +93,7 @@ public class ReaderTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(file));
 
-        using var reader = new FixedWidthReader(stream, new int[] { 1, 6, 10 }) ;
+        using var reader = new FixedWidthReader(stream, [1, 6, 10]) ;
 
        await Should.ThrowAsync<FormatException>(async () => await reader.Read());
     }
@@ -105,7 +105,7 @@ public class ReaderTests
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(file));
 
-        using var reader = new FixedWidthReader(stream, new int[] { 1, 6, 10 }, new FixedWidthReaderOptions
+        using var reader = new FixedWidthReader(stream, [1, 6, 10], new FixedWidthReaderOptions
         {
             IgnoreExtraCharactersAtEndOfRecord = true
         });
@@ -141,12 +141,12 @@ public class ReaderTests
 
         using var reader = new FixedWidthReader(stream, async r =>
         {
-            var peek = await r.Peek(new int[] { 1, 3, 1 });
+            var peek = await r.Peek([1, 3, 1]);
 
             if (peek?[0] == "A")
-                return new int[] { 1, 2 };
+                return [1, 2];
             else if (peek?[2] == "B")
-                return new int[] { 4, 1, 8, 8 };
+                return [4, 1, 8, 8];
             else
                 return null;
         });

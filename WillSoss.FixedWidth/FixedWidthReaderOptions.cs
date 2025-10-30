@@ -1,19 +1,6 @@
 ﻿using System.Text;
 
 namespace WillSoss.FixedWidth;
-
-public enum RecordSeparator
-{
-    /// <summary>
-    /// No line break at the end of each record
-    /// </summary>
-    None,
-    /// <summary>
-    /// A line break (line feed, carriage return, or combination) is expected at the end of a record.
-    /// </summary>
-    LineBreak
-}
-
 public class FixedWidthReaderOptions
 {
     public static readonly FixedWidthReaderOptions Default = new();
