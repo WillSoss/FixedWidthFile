@@ -126,7 +126,7 @@ public class FixedWidthReader : IDisposable
 
         if (length > _length)
         {
-            _length += await _reader.ReadAsync(_buffer, _length, length - _length);
+            _length += await _reader.ReadAsync(_buffer, _index + _length, length - _length);
 
             if (_length == 0)
                 return null;

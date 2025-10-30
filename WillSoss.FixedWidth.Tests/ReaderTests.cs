@@ -123,19 +123,17 @@ public class ReaderTests
         eof.ShouldBeNull();
     }
 
-    [Fact]
-    public async Task PeekingIntoNextRecord()
+    [Theory]
+    [InlineData("A 1\r\n 123B    john     doe\r\n")]
+    [InlineData("A 1\r 123B    john     doe\r")]
+    [InlineData("A 1\n 123B    john     doe\n")]
+    public async Task PeekingIntoNextRecord(string file)
     {
         // Tests a specific scenario where peeking reads
         // part of the next record into the buffer and
         // the current record's line break is consumed, 
         // leaving the first part of the next record for
         // the subsequent peek and read.
-
-        var file = """
-            A 1
-             123B    john     doe
-            """;
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(file));
 
